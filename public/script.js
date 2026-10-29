@@ -3,10 +3,10 @@
  */
 function changeTheme() {
     const btn = document.querySelector('button');
-
+    document.documentElement.classList.toggle('light') // adds the inital theme
     btn.addEventListener('click', () => {
-        document.documentElement.classList.toggle('light');
         document.documentElement.classList.toggle('dark');
+        document.documentElement.classList.toggle('light')
     });
 };
 
@@ -50,13 +50,17 @@ class productViewer {
 
             const name = document.createElement('h2');
             name.textContent = product.item_name || 'Unnamed product';
-            itemInfo.append(name);
 
             if (product.img) {
                 const image = document.createElement('img');
                 image.src = product.img;
+                image.classList.add('product-image');
                 itemInfo.append(image);
             }
+
+            itemInfo.append(name);
+            itemInfo.classList.add('product-item');
+
 
             if (product.category) {
                 const category = document.createElement('p');
