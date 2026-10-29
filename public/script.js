@@ -52,6 +52,12 @@ class productViewer {
             name.textContent = product.item_name || 'Unnamed product';
             itemInfo.append(name);
 
+            if (product.img) {
+                const image = document.createElement('img');
+                image.src = product.img;
+                itemInfo.append(image);
+            }
+
             if (product.category) {
                 const category = document.createElement('p');
                 category.textContent = product.category;
