@@ -47,6 +47,8 @@ class productViewer {
 
         for (const product of products) { // for each product in the array
             const itemInfo = document.createElement('li');
+            const details = document.createElement('div');
+            details.classList.add('product-details');
 
             const name = document.createElement('h2');
             name.textContent = product.item_name || 'Unnamed product';
@@ -58,14 +60,14 @@ class productViewer {
                 itemInfo.append(image);
             }
 
-            itemInfo.append(name);
+            details.append(name);
             itemInfo.classList.add('product-item');
 
 
             if (product.category) {
                 const category = document.createElement('p');
                 category.textContent = product.category;
-                itemInfo.append(category);
+                details.append(category);
             }
 
             if (product.stock !== undefined && product.stock !== null) {
@@ -77,15 +79,16 @@ class productViewer {
                     stock.textContent = 'Out of Stock';
                 }
 
-                itemInfo.append(stock);
+                details.append(stock);
             }
 
             if (product.price !== undefined && product.price !== null) {
                 const price = document.createElement('p');
                 price.textContent = `Price: £${product.price.toFixed(2)}`;
-                itemInfo.append(price);
+                details.append(price);
             }
 
+            itemInfo.append(details);
             this.list.append(itemInfo);
         }
     }
