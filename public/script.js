@@ -5,7 +5,7 @@ function changeTheme() {
     const btn = document.querySelector('button');
 
     
-    if (localStorage.getItem('lightTheme') === null || localStorage.getItem('lightTheme') === false) { // checks if the user has set an inital theme
+    if (localStorage.getItem('lightTheme') === null || localStorage.getItem('lightTheme') === true) { // checks if the user has set an inital theme
         localStorage.setItem('lightTheme', true);
         document.documentElement.classList.toggle('light'); // adds the initial theme
         console.log('Light theme added');
