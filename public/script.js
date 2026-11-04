@@ -3,10 +3,29 @@
  */
 function changeTheme() {
     const btn = document.querySelector('button');
-    document.documentElement.classList.toggle('light') // adds the inital theme
-    btn.addEventListener('click', () => {
+
+    
+    if (localStorage.getItem('lightTheme') === null || localStorage.getItem('lightTheme') === false) { // checks if the user has set an inital theme
+        localStorage.setItem('lightTheme', true);
+        document.documentElement.classList.toggle('light'); // adds the initial theme
+        console.log('Light theme added');
+    } else {
+        if (localStorage.getItem('lightTheme') === true) { // checks if the user has set a theme and adds it to the page
+            document.documentElement.classList.toggle('light');
+            console.log('Light theme added');
+        } else {
+            document.documentElement.classList.toggle('dark');
+            console.log('Dark theme added');
+        }
+    }
+    btn.addEventListener('click', () => { // checks the current theme and toggles it 
+        if (localStorage.getItem('lightTheme') === true) { // updating the local storage so that it can be called if a new page is loaded or if page is reloaded
+            localStorage.setItem('lightTheme', false);
+        } else {
+            localStorage.setItem('lightTheme', true);
+        }
         document.documentElement.classList.toggle('dark');
-        document.documentElement.classList.toggle('light')
+        document.documentElement.classList.toggle('light');
     });
 };
 
