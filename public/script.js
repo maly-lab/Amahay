@@ -2,7 +2,7 @@
  * Toggles the theme of the web page between light and dark mode.
  */
 function changeTheme() {
-    const btn = document.querySelector('button');
+    const btn = document.getElementById('themeToggle');
 
     
     if (localStorage.getItem('lightTheme') === null || localStorage.getItem('lightTheme') === true) { // checks if the user has set an inital theme
@@ -125,6 +125,24 @@ class productViewer {
         }
     }
 
+}
+
+async function getProducts(category, sort) {
+    const params = new URLSearchParams();
+    if (category) params.set('category', category);
+    if (sort) params.set('sort', sort);
+
+    const response = await fetch(`/api/products?${params}`);
+    if (!response.ok) {
+        throw new Error(`Products file returned ${response.status}`);
+    }
+    return await response.json();
+}
+
+async function refresh() {
+    const category = document.getElementById('categoryDropdown').value;
+    const sort = document.getElementById('sortDropdown').value;
+    new productViewer().showProducts(await new getProducts(category, sort)); 
 }
 
 new productViewer().loadProducts();
