@@ -34,7 +34,7 @@ function changeTheme() {
  */
 class productViewer {
     constructor() { // Initializes the productViewer instance.
-        this.productsFile = 'http://localhost:3000/api/products';
+        this.productsFile = '/api/products';
         this.list = document.querySelector('.products');
     }
 
@@ -124,8 +124,8 @@ class productViewer {
             console.error(error);
         }
     }
+
 }
 
 new productViewer().loadProducts();
 changeTheme();
-

@@ -5,6 +5,7 @@ const express = require('express') //loads express library
 const app = express() // creates server application (here we add routes)
 const PORT = process.env.PORT || 3000 // tries to use a local PORT if one exisits otherwise is set to 3000
 const path = require('path') // loads path library
+app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public'))) // makes backend exist and sets the public folder as the static folder for the website
 
 const products = require('./routes/products') // loads the products route
@@ -21,4 +22,3 @@ app.get('/api/health', (req, res) => {
 app.listen( PORT, () => {
     console.log(`Amahay backend is running at local http://localhost:${PORT}`) // logs url to terminal if the site is running
 });
-

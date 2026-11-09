@@ -12,13 +12,25 @@ const products = [ // creates product (in json format)
     { id: 7, item_name: "Matte Black Paint", img: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fres.cloudinary.com%2Fdnljxwaxk%2Fimage%2Fupload%2Fv1708037129%2FKimball%2520Hospitality%2FMaterials%2FMetals%2FMatte-Black-MB_2.jpg&f=1&nofb=1&ipt=71de64dbc86eb5958afada9850432eded6d20d6b42cc45d003cc5a621fe7c369&ipo=images',category: "Paint", price: 30, stock: 5}    
 ];
 
+let nextId = products.length; // sets the next id to the length of the products array
+
+/**
+ * Parses the ID from a string value.
+ * @param {*} value - The value to parse.
+ * @returns {number|null} - The parsed ID or null if invalid.
+ */
 function parseId(value) {
     const id = Number(value); // converts the value to a number
     return Number.isInteger(id) ? id : null; // returns the id if it is an integer otherwise returns null
 }
 
+/** 
+ * Handles the retrieval of all products or filtered products based on query parameters.
+ * @param {Object} req - The request object containing query parameters.
+ * @param {Object} res - The response object used to send back the filtered products or an error message.
+ */
 router.get('/', (req, res) => {
-    let result = [...products];
+    let result = [...products]; // creates a copy of the products array to avoid modifying the original data
 
     const { category, name, maxPrice, stock } = req.query;
 
@@ -45,6 +57,12 @@ router.get('/', (req, res) => {
     res.json(result);
 });
 
+/**
+ * Handles the retrieval of a specific product by its ID.
+ * Validates the ID and returns the product if found, or an error message if not.
+ * @param {Object} req - The request object containing the product ID in req.params.id.
+ * @param {Object} res - The response object used to send back the product or an error message.
+ */
 router.get('/:id', (req, res) => {
     const id = parseId(req.params.id);
     if (id === null) {
@@ -57,6 +75,36 @@ router.get('/:id', (req, res) => {
     }
 
     return res.json(product);
+});
+
+/**
+ * Handles the creation of a new product.
+ * Validates the input data and adds the new product to the products array.
+ * @param {Object} req - The request object containing the new product data in req.body.
+ * @param {Object} res - The response object used to send back the created product or an error message.
+ */
+router.post('/', (req, res) => {
+    const { name, category, price, stock = 0, img} = req.body ?? {};
+
+    // checks that the new item has valid data
+    if (typeof name !== 'string' || name.trim() === '') {return res.status(400).json({ error: 'Product name is required' });};
+    if (typeof category !== 'string' || category.trim() === '') {return res.status(400).json({ error: 'Product category is required' });};
+    if (typeof price !== 'number' || price < 0) { return res.status(400).json({ error: 'Product price is required and must be a positive number' });};
+    if (typeof stock !== 'number' || stock < 0) { return res.status(400).json({ error: 'Product stock is required and must be a positive number' });};
+    if (typeof img !== 'string') { return res.status(400).json({ error: 'Product image must be a string to the url' });};
+
+    // creates the new product with its details
+    const product = {
+        id: nextId++,
+        item_name: name.trim(),
+        category: category.trim(),
+        price,
+        stock,
+        img: img || null
+    };
+    products.push(product); // adds the new product to the products array
+
+    res.status(201).json(product); // sets the status code to 201 (created) and returns the new product as a JSON response
 });
 
 module.exports = router; // makes entire file available to server.js
